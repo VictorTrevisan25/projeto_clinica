@@ -1,13 +1,17 @@
 #ifndef PET_H_INCLUDED
 #define PET_H_INCLUDED
+
 #include <time.h>
+#include <string.h>
+
 
 typedef struct nascimento
 {
     int dia;
     int mes;
     int ano;
-}Data;
+} Data;
+
 typedef struct pet
 {
     int ID;
@@ -15,61 +19,61 @@ typedef struct pet
     char especie[20];
     int idade;
     Data data;
-    int prioridade; //0 emergencia 1 normal
-}Pet;
+    int prioridade; // 0 emergencia 1 normal
+} Pet;
 
 typedef struct no
 {
     Pet info;
     struct no *prox;
-}No;
+} No;
 
 typedef struct fila
 {
     No *ini;
     No *fim;
-}Fila;
+} Fila;
 
-Fila* CriaFila ()
+// Protótipos das funções que precisam ser declaradas antes do uso
+int idExiste(Fila *f, int id);
+int gerarID(Fila *f);
+void imprimeDados(Pet p);
+
+
+Fila* CriaFila()
 {
     Fila* f = (Fila*) malloc(sizeof(Fila));
     f->ini = f->fim = NULL;
     return f;
 }
 
-//função para verificar se uma fila esta vazia
 int verificaVazia(Fila *f)
 {
-    return f->ini == NULL ? 1:0;
+    return (f->ini == NULL); // Retorna 1 vazia, 0 caso contrário
 }
 
-No* insereFim(No *fim , Pet a)
+No* insereFim(No *fim, Pet a)
 {
     No *p = (No*)malloc(sizeof(No));
-    p->info=a;
-    p->prox=NULL;
+    p->info = a;
+    p->prox = NULL;
     if(fim != NULL)
     {
-        fim->prox=p;
+        fim->prox = p;
     }
     return p;
 }
 
-void InsereFila(Fila *f ,Pet v)
+void InsereFila(Fila *f, Pet v)
 {
-    f->fim= insereFim(f->fim,v);
-    if(f->fim==NULL)
+    f->fim = insereFim(f->fim, v);
+    if(f->ini == NULL)
     {
-        f->ini=f->fim; //se a fila estiver vazia ele iguala o fim e o inicio ja que o elemento inserido sera o primeiro
+        f->ini = f->fim;
     }
 }
 
-No* retiraInicio(No *ini)
-{
-    No *p = ini->prox;
-    free(ini);
-    return p;
-}
+
 No* retiraFila(Fila *f)
 {
    No *v;
@@ -89,151 +93,154 @@ No* retiraFila(Fila *f)
 
 void imprimeFila(Fila *f)
 {
-    No *aux;
-    aux= f->ini;
-    printf("A fila segue o seguinte padrão: ID | Nome | Espécie | Idade | Data de Nascimento | Prioridade\n");
-    printf("\n\t\t");
+    if (verificaVazia(f)) {
+        printf("Fila vazia.\n");
+        return;
+    }
+
+    No *aux = f->ini;
     while(aux != NULL)
     {
-        printf("%d | %c | %c | %d | %d/%d/%d | Prioridade: %d", aux->info.ID, aux->info.nome , aux->info.especie , aux->info.idade , aux->info.data.dia, aux->info.data.mes, aux->info.data.ano, aux->info.prioridade);
-        aux=aux->prox;
-    }
-    printf("\n");
 
+        printf("ID: %d | Nome: %s | Especie: %s | Idade: %d | Nasc: %d/%d/%d | Prioridade: %d\n",
+               aux->info.ID, aux->info.nome, aux->info.especie, aux->info.idade,
+               aux->info.data.dia, aux->info.data.mes, aux->info.data.ano, aux->info.prioridade);
+        aux = aux->prox;
+    }
 }
 
-Fila* apagaFila(Fila *f)
+void apagaFila(Fila *f)
 {
     No *p = f->ini;
     while(p != NULL)
     {
         No *aux = p->prox;
         free(p);
-        p=aux;
+        p = aux;
     }
     free(f);
-    return NULL;
 }
-
 
 void novoPet(Fila *f, Fila *id, int prioridade)
 {
-    No *novo = (No*)malloc(sizeof(No));
-    if(novo ==NULL)
-    {
-        printf("erro ao alocar memoria");
-        exit(0);
-    }
+    Pet novoPetInfo;
 
-    novo->info.ID= gerarID(id);
+    novoPetInfo.ID = gerarID(id);
+
+    printf("Nome: ");
+    fgets(novoPetInfo.nome, sizeof(novoPetInfo.nome), stdin);
+    novoPetInfo.nome[strcspn(novoPetInfo.nome, "\n")] = '\0'; // Remove a quebra de linha
+
+    printf("Especie: ");
+    fgets(novoPetInfo.especie, sizeof(novoPetInfo.especie), stdin);
+    novoPetInfo.especie[strcspn(novoPetInfo.especie, "\n")] = '\0';
+
+    printf("Idade: ");
+    scanf("%d", &novoPetInfo.idade);
+
+    printf("Data de nascimento (DD MM AAAA): ");
+    scanf("%d %d %d", &novoPetInfo.data.dia, &novoPetInfo.data.mes, &novoPetInfo.data.ano);
+
+    // Limpa o buffer para a próxima iteração do menu principal
     int c;
-    while((c= getchar())!= '\n' && c!= EOF);
+    while ((c = getchar()) != '\n' && c != EOF);
 
-    printf("Nome:\n");
-    fgets(novo->info.nome, sizeof(novo->info.nome), stdin);
-    novo->info.nome[strcspn(novo->info.nome, "\n")] = '\0';
+    novoPetInfo.prioridade = prioridade;
 
-    printf("Especie:\n ");
-    fgets(novo->info.especie , sizeof(novo->info.especie), stdin);
-    novo->info.especie[ strcspn(novo->info.especie, "\n")] = '\0';
+    InsereFila(f, novoPetInfo);
 
-    printf("Idade:\n");
-    scanf("%d", &novo->info.idade);
-
-    printf("Data de nascimento.\n Dia:");
-    scanf("%d",&novo->info.data.dia);
-
-    printf("\n Mes:");
-    scanf("%d",&novo->info.data.mes);
-
-    printf("\n Ano:");
-    scanf("%d",&novo->info.data.ano);
-
-    novo->info.prioridade = prioridade;
+    // Adiciona o ID usado na fila de IDs
     Pet auxID;
-    auxID.ID = novo->info.ID;
-    InsereFila(f, novo->info);
-    InsereFila(id ,auxID );
+    auxID.ID = novoPetInfo.ID;
+    InsereFila(id, auxID);
 }
 
-void imprimeDados(Fila *f, int v)
+// CORREÇÃO: Função recebe um Pet, não a fila inteira
+void imprimeDados(Pet p)
 {
-    No *aux;
-    aux=f->ini;
-    printf("A fila segue o seguinte padrão: ID | Nome | Espécie | Idade | Data de Nascimento | Prioridade\n");
-    for(v ; v>0 ; v--)
-    {
-        aux=aux->prox;
+    printf("\n");
+     printf("ID: %d | Nome: %s | Especie: %s | Idade: %d | Nasc: %d/%d/%d | Prioridade: %d",
+           p.ID, p.nome, p.especie, p.idade, p.data.dia, p.data.mes, p.data.ano, p.prioridade);
+    printf("\n");
+}
+
+void proxAtendimento(Fila *f, Fila *fa)
+{
+    if (verificaVazia(f)) {
+        printf("Fila de atendimento vazia.\n");
+        return;
     }
-    printf("%d | %c | %c | %d | %d/%d/%d | Prioridade: %d", aux->info.ID, aux->info.nome , aux->info.especie , aux->info.idade , aux->info.data.dia, aux->info.data.mes, aux->info.data.ano, aux->info.prioridade);
-}
-
-void proxAtendimento(Fila *f,Fila *fa)
-{
     No *v;
-    printf("Proximo paciente a ser atendido:");
-    imprimeDados(f,1);
-    v=retiraFila(f);
-    InsereFila(fa,v->info);
-
+    v = retiraFila(f);
+    Pet petAtendido = v->Pet;
+    printf("Pet a ser atendido:\n");
+    imprimeDados(petAtendido);
+    InsereFila(fa, petAtendido); // Insere na fila de atendidos
+    printf("\nPet movido para a fila de atendidos.\n");
 }
 
-int procurarPorId(Fila *f , int id)
+int procurarPorId(Fila *f, int id)
 {
-    No *aux;
-    int cont = 1;
-    aux=f->ini;
+    No *aux = f->ini;
     while(aux != NULL)
     {
         if(aux->info.ID == id)
         {
-            printf("Pet Encontrado \n");
-            imprimeDados(f,cont);
-            return 0;
+            printf("\nPet Encontrado:\n");
+            imprimeDados(aux->info);
+            return 0; // Encontrado
         }
-        aux=aux->prox;
-        cont ++;
+        aux = aux->prox;
     }
-    return 1;
+    return 1; // Não encontrado
 }
+
+
 int procuraPorNome(Fila *f, char n[20])
 {
-    No *aux;
-    int cont = 1;
-    aux=f->ini;
+    No *aux = f->ini;
     while(aux != NULL)
     {
-        if(aux->info.nome == n)
+        if(strcmp(aux->info.nome, n) == 0) // strcmp retorna 0 se as strings são iguais
         {
-            printf("Pet Encontrado");
-            imprimeDados(f , cont);
-            return 0;
+            printf("\nPet Encontrado:\n");
+            imprimeDados(aux->info);
+            return 0; // Encontrado
         }
-        aux=aux->prox;
-        cont ++;
+        aux = aux->prox;
     }
-    return 1;
+    return 1; // Não encontrado
 }
 
+int idExiste(Fila *f, int id)
+{
+    No *aux = f->ini;
+    while(aux != NULL)
+    {
+        if(aux->info.ID == id) return 1;
+        aux = aux->prox;
+    }
+    return 0;
+}
 
-//função de criar ID
 int gerarID(Fila *f) {
     int id;
     do {
         id = 100 + rand() % 900;
-    } while(idExiste(f, id));  // repete enquanto o ID já existir
+    } while(idExiste(f, id));
     return id;
 }
 
-int idExiste(Fila *f,int id)
-{
-    No *aux=f->ini;
-    while(aux != NULL)
-    {
-        if(aux->info.ID == id) return 1;
-        aux=aux->prox;
-    }
-    return 0;
-}
-#endif
+/* OBS -------------------------------------------------------------
 
+-> para evitar conflito de scanf com fgets a cada vez q ler eu limpo o buffer
+-> arrumei o problema do while no main q tava invertido o (!=)
+-> na de comparar a gente tava faznedo errado (aux->info.nome == n) da ruim, tem q
+usar aquelas funções de string ai eu usei o "strcmp" q se for == 0 quer dizer q são iguais
+
+->
+
+
+*/
+
+#endif
