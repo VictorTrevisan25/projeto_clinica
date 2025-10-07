@@ -227,16 +227,6 @@ int procuraPorNome(Fila *f, char n[20])
     return 1; // N�o encontrado
 }
 
-/* OBS -------------------------------------------------------------
-
--> para evitar conflito de scanf com fgets a cada vez q ler eu limpo o buffer
--> arrumei o problema do while no main q tava invertido o (!=)
--> na de comparar a gente tava faznedo errado (aux->info.nome == n) da ruim, tem q
-usar aquelas fun��es de string ai eu usei o "strcmp" q se for == 0 quer dizer q s�o iguais
-
-->
-
-
 */
 
 #endif
