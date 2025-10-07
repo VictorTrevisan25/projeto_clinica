@@ -15,8 +15,8 @@ typedef struct nascimento
 typedef struct pet
 {
     int ID;
-    char nome[20];
-    char especie[20];
+    char nome[50];
+    char especie[30];
     int idade;
     Data data;
     int prioridade; // 0 emergencia 1 normal
@@ -34,10 +34,33 @@ typedef struct fila
     No *fim;
 } Fila;
 
-// Protótipos das funções que precisam ser declaradas antes do uso
-int idExiste(Fila *f, int id);
-int gerarID(Fila *f);
-void imprimeDados(Pet p);
+int idExiste(Fila *f, int id)
+{
+    No *aux = f->ini;
+    while(aux != NULL)
+    {
+        if(aux->info.ID == id) return 1;
+        aux = aux->prox;
+    }
+    return 0;
+}
+
+int gerarID(Fila *f) {
+    int id;
+    do {
+        id = 100 + rand() % 900;
+    } while(idExiste(f, id));
+    return id;
+}
+
+// CORREï¿½ï¿½O: Funï¿½ï¿½o recebe um Pet, nï¿½o a fila inteira
+void imprimeDados(Pet p)
+{
+    printf("\n");
+     printf("ID: %d | Nome: %s | Especie: %s | Idade: %d | Nasc: %d/%d/%d | Prioridade: %d",
+           p.ID, p.nome, p.especie, p.idade, p.data.dia, p.data.mes, p.data.ano, p.prioridade);
+    printf("\n");
+}
 
 
 Fila* CriaFila()
@@ -49,7 +72,7 @@ Fila* CriaFila()
 
 int verificaVazia(Fila *f)
 {
-    return (f->ini == NULL); // Retorna 1 vazia, 0 caso contrário
+    return (f->ini == NULL); // Retorna 1 vazia, 0 caso contrï¿½rio
 }
 
 No* insereFim(No *fim, Pet a)
@@ -141,7 +164,7 @@ void novoPet(Fila *f, Fila *id, int prioridade)
     printf("Data de nascimento (DD MM AAAA): ");
     scanf("%d %d %d", &novoPetInfo.data.dia, &novoPetInfo.data.mes, &novoPetInfo.data.ano);
 
-    // Limpa o buffer para a próxima iteração do menu principal
+    // Limpa o buffer para a prï¿½xima iteraï¿½ï¿½o do menu principal
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
 
@@ -155,14 +178,6 @@ void novoPet(Fila *f, Fila *id, int prioridade)
     InsereFila(id, auxID);
 }
 
-// CORREÇÃO: Função recebe um Pet, não a fila inteira
-void imprimeDados(Pet p)
-{
-    printf("\n");
-     printf("ID: %d | Nome: %s | Especie: %s | Idade: %d | Nasc: %d/%d/%d | Prioridade: %d",
-           p.ID, p.nome, p.especie, p.idade, p.data.dia, p.data.mes, p.data.ano, p.prioridade);
-    printf("\n");
-}
 
 void proxAtendimento(Fila *f, Fila *fa)
 {
@@ -192,7 +207,7 @@ int procurarPorId(Fila *f, int id)
         }
         aux = aux->prox;
     }
-    return 1; // Não encontrado
+    return 1; // Nï¿½o encontrado
 }
 
 
@@ -201,7 +216,7 @@ int procuraPorNome(Fila *f, char n[20])
     No *aux = f->ini;
     while(aux != NULL)
     {
-        if(strcmp(aux->info.nome, n) == 0) // strcmp retorna 0 se as strings são iguais
+        if(strcmp(aux->info.nome, n) == 0) // strcmp retorna 0 se as strings sï¿½o iguais
         {
             printf("\nPet Encontrado:\n");
             imprimeDados(aux->info);
@@ -209,26 +224,7 @@ int procuraPorNome(Fila *f, char n[20])
         }
         aux = aux->prox;
     }
-    return 1; // Não encontrado
-}
-
-int idExiste(Fila *f, int id)
-{
-    No *aux = f->ini;
-    while(aux != NULL)
-    {
-        if(aux->info.ID == id) return 1;
-        aux = aux->prox;
-    }
-    return 0;
-}
-
-int gerarID(Fila *f) {
-    int id;
-    do {
-        id = 100 + rand() % 900;
-    } while(idExiste(f, id));
-    return id;
+    return 1; // Nï¿½o encontrado
 }
 
 /* OBS -------------------------------------------------------------
@@ -236,7 +232,7 @@ int gerarID(Fila *f) {
 -> para evitar conflito de scanf com fgets a cada vez q ler eu limpo o buffer
 -> arrumei o problema do while no main q tava invertido o (!=)
 -> na de comparar a gente tava faznedo errado (aux->info.nome == n) da ruim, tem q
-usar aquelas funções de string ai eu usei o "strcmp" q se for == 0 quer dizer q são iguais
+usar aquelas funï¿½ï¿½es de string ai eu usei o "strcmp" q se for == 0 quer dizer q sï¿½o iguais
 
 ->
 

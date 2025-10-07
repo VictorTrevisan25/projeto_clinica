@@ -6,7 +6,7 @@ int main()
 {
     srand(time(NULL)); //inicializa gerador de numeros aleatorios para o ID
     int op,valor,a;
-    char n[20];
+    char n[50];
     Pet *aux;
     Fila *FE , *FN , *FA ,*ID;
     FE= CriaFila();
@@ -24,7 +24,7 @@ int main()
         printf("2- Atender Pet.\n");
         printf("3- Buscar por Pet.\n");
         printf("4- Imprimir Fila de Pacientes.\n");
-        printf("5- Imprimir Informações do proximo paciente.\n");
+        printf("5- Imprimir Informaï¿½ï¿½es do proximo paciente.\n");
         printf("6- Imprimir pacientes Atendidos.\n");
         printf("7- Finalizar sistema.\n");
         printf("OBS: pacientes da fila de Emergencia = 0 e os da fila normal = 1\n");
@@ -94,7 +94,7 @@ int main()
                     }
 
                 }
-                printf("Pet Não Encontrado");
+                printf("Pet Nï¿½o Encontrado");
             }
             else
             {
@@ -113,12 +113,12 @@ int main()
                         }
                     }
                 }
-                printf("Pet Não Encontrado");
+                printf("Pet Nï¿½o Encontrado");
             }
             system("pause");
             break;
-        case 4://imprimir pets e informações deles da lista normal e de emergencia
-            printf("As Informações dos pets seguem a seguinte ordem: \n ID | Nome | Espécie | Idade | Data de Nascimento | Prioridade");
+        case 4://imprimir pets e informaï¿½ï¿½es deles da lista normal e de emergencia
+            printf("As Informaï¿½ï¿½es dos pets seguem a seguinte ordem: \n ID | Nome | Espï¿½cie | Idade | Data de Nascimento | Prioridade");
             printf("FILA DE EMERGENCIA:\n");
             imprimeFila(FE);
             printf("\n FILA NORMAL:\n");
@@ -166,7 +166,7 @@ void limparBuffer() {
 int main()
 {
     setlocale(LC_ALL, "Portuguese");
-    srand(time(NULL)); // Inicializa gerador de números aleatórios para o ID
+    srand(time(NULL)); // Inicializa gerador de nï¿½meros aleatï¿½rios para o ID
     int op, valor;
     char nomeBusca[20];
     Fila *FE, *FN, *FA, *ID;
