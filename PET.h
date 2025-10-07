@@ -48,12 +48,11 @@ int idExiste(Fila *f, int id)
 int gerarID(Fila *f) {
     int id;
     do {
-        id = 100 + rand() % 900;
-    } while(idExiste(f, id));
+        id = 100 + rand() % 900; // rand () limita a gerar numero entre 100 e 999
+    } while(idExiste(f, id)); //roda enquanto o ID ja existeir
     return id;
 }
 
-// CORRE��O: Fun��o recebe um Pet, n�o a fila inteira
 void imprimeDados(Pet p)
 {
     printf("\n");
@@ -72,7 +71,7 @@ Fila* CriaFila()
 
 int verificaVazia(Fila *f)
 {
-    return (f->ini == NULL); // Retorna 1 vazia, 0 caso contr�rio
+    return (f->ini == NULL); // Retorna 1 vazia, 0 caso contrario
 }
 
 No* insereFim(No *fim, Pet a)
@@ -207,7 +206,7 @@ int procurarPorId(Fila *f, int id)
         }
         aux = aux->prox;
     }
-    return 1; // N�o encontrado
+    return 1; // Nao encontrado
 }
 
 
@@ -216,7 +215,7 @@ int procuraPorNome(Fila *f, char n[20])
     No *aux = f->ini;
     while(aux != NULL)
     {
-        if(strcmp(aux->info.nome, n) == 0) // strcmp retorna 0 se as strings s�o iguais
+        if(strcmp(aux->info.nome, n) == 0) // strcmp retorna 0 se as strings sao iguais
         {
             printf("\nPet Encontrado:\n");
             imprimeDados(aux->info);
@@ -224,7 +223,7 @@ int procuraPorNome(Fila *f, char n[20])
         }
         aux = aux->prox;
     }
-    return 1; // N�o encontrado
+    return 1; // Nao encontrado
 }
 
 */

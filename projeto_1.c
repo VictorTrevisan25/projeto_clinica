@@ -117,7 +117,7 @@ int main()
             }
             system("pause");
             break;
-        case 4://imprimir pets e informa��es deles da lista normal e de emergencia
+        case 4://imprimir pets e informacoes deles da lista normal e de emergencia
             printf("As Informa��es dos pets seguem a seguinte ordem: \n ID | Nome | Esp�cie | Idade | Data de Nascimento | Prioridade");
             printf("FILA DE EMERGENCIA:\n");
             imprimeFila(FE);
@@ -166,7 +166,7 @@ void limparBuffer() {
 int main()
 {
     setlocale(LC_ALL, "Portuguese");
-    srand(time(NULL)); // Inicializa gerador de n�meros aleat�rios para o ID
+    srand(time(NULL)); // Inicializa gerador de numeros aleatorios para o ID
     int op, valor;
     char nomeBusca[20];
     Fila *FE, *FN, *FA, *ID;
