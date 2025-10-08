@@ -1,6 +1,5 @@
 #ifndef PET_H_INCLUDED
 #define PET_H_INCLUDED
-
 #include <time.h>
 #include <string.h>
 
@@ -108,15 +107,15 @@ No* retiraInicio (No* ini)
     return p;
 }
 
-Pet* retiraFila(Fila *f)
+Pet retiraFila(Fila *f)
 {
-   No *v;
+   Pet v;
    if(verificaVazia(f)== 1)
    {
        printf("a Fila esta vazia.");
        exit(0);
    }
-   v->info = f->ini->info;
+   v = f->ini->info;
    f->ini=retiraInicio(f->ini);
    if(f->ini == NULL)
    {
@@ -196,16 +195,15 @@ void proxAtendimento(Fila *f, Fila *fa)
         printf("Fila de atendimento vazia.\n");
         return;
     }
-    No *v;
+    Pet v;
     v = retiraFila(f);
-    Pet petAtendido = v->info;
     printf("Pet a ser atendido:\n");
-    imprimeDados(petAtendido);
-    InsereFila(fa, petAtendido); // Insere na fila de atendidos
+    imprimeDados(v);
+    InsereFila(fa, v); // Insere na fila de atendidos
     printf("\nPet movido para a fila de atendidos.\n");
 }
 
-int procurarPorId(Fila *f, int id)
+int procurarPorId(Fila *f, int id,Fila *fa)
 {
     No *aux = f->ini;
     while(aux != NULL)
@@ -214,6 +212,9 @@ int procurarPorId(Fila *f, int id)
         {
             printf("\nPet Encontrado:\n");
             imprimeDados(aux->info);
+            if(f == fa){
+                printf("Pet Ja Atendido");
+            }
             return 0; // Encontrado
         }
         aux = aux->prox;
@@ -222,7 +223,7 @@ int procurarPorId(Fila *f, int id)
 }
 
 
-int procuraPorNome(Fila *f, char n[20])
+int procuraPorNome(Fila *f, char n[20], Fila *fa)
 {
     No *aux = f->ini;
     while(aux != NULL)
@@ -231,6 +232,9 @@ int procuraPorNome(Fila *f, char n[20])
         {
             printf("\nPet Encontrado:\n");
             imprimeDados(aux->info);
+              if(f == fa){
+                printf("Pet Ja Atendido");
+            }
             return 0; // Encontrado
         }
         aux = aux->prox;

@@ -91,9 +91,9 @@ int main()
                     scanf("%d", &idBusca);
                     limparBuffer();
 
-                    if (procurarPorId(FE, idBusca) == 1 &&
-                        procurarPorId(FN, idBusca) == 1 &&
-                        procurarPorId(FA, idBusca) == 1)
+                    if (procurarPorId(FE, idBusca, FA) == 1 &&
+                        procurarPorId(FN, idBusca, FA) == 1 &&
+                        procurarPorId(FA, idBusca, FA) == 1)
                         printf("\n[ERRO] Pet com ID %d nao encontrado.\n", idBusca);
                 }
                 else
@@ -102,9 +102,9 @@ int main()
                     fgets(nomeBusca, sizeof(nomeBusca), stdin);
                     nomeBusca[strcspn(nomeBusca, "\n")] = '\0';
 
-                    if (procuraPorNome(FE, nomeBusca) == 1 &&
-                        procuraPorNome(FN, nomeBusca) == 1 &&
-                        procuraPorNome(FA, nomeBusca) == 1)
+                    if (procuraPorNome(FE, nomeBusca, FA) == 1 &&
+                        procuraPorNome(FN, nomeBusca, FA) == 1 &&
+                        procuraPorNome(FA, nomeBusca, FA) == 1)
                         printf("\n[ERRO] Pet com nome '%s' nao encontrado.\n", nomeBusca);
                 }
                 printf("---------------------------------------------\n");
