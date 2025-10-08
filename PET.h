@@ -34,6 +34,12 @@ typedef struct fila
     No *fim;
 } Fila;
 
+void limparBuffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
+
+
 int idExiste(Fila *f, int id)
 {
     No *aux = f->ini;
@@ -95,8 +101,14 @@ void InsereFila(Fila *f, Pet v)
     }
 }
 
+No* retiraInicio (No* ini)
+{
+    No* p = ini->prox;
+    free(ini);
+    return p;
+}
 
-No* retiraFila(Fila *f)
+Pet* retiraFila(Fila *f)
 {
    No *v;
    if(verificaVazia(f)== 1)
@@ -163,7 +175,7 @@ void novoPet(Fila *f, Fila *id, int prioridade)
     printf("Data de nascimento (DD MM AAAA): ");
     scanf("%d %d %d", &novoPetInfo.data.dia, &novoPetInfo.data.mes, &novoPetInfo.data.ano);
 
-    // Limpa o buffer para a pr�xima itera��o do menu principal
+    // Limpa o buffer para a proxima iteracao do menu principal
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
 
@@ -186,7 +198,7 @@ void proxAtendimento(Fila *f, Fila *fa)
     }
     No *v;
     v = retiraFila(f);
-    Pet petAtendido = v->Pet;
+    Pet petAtendido = v->info;
     printf("Pet a ser atendido:\n");
     imprimeDados(petAtendido);
     InsereFila(fa, petAtendido); // Insere na fila de atendidos
@@ -225,7 +237,5 @@ int procuraPorNome(Fila *f, char n[20])
     }
     return 1; // Nao encontrado
 }
-
-*/
 
 #endif
